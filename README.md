@@ -1,26 +1,20 @@
-# MASWavesPy
+# 2D MASWavesPy
 
-MASWavesPy (`maswavespy`) is a Python package for processing and inverting MASW data, developed at the Faculty of Civil and Environmental Engineering, University of Iceland. 
+## Overview
 
-### Table of contents
-- [About MASWavesPy](#about-maswavespy)
-  - [Referencing MASWavesPy](#referencing-maswavespy)
-  - [License](#license)
-  - [Acknowledgements](#acknowledgements)
-- [Installation](#installation)
-   - [General installation using pip](#general-installation-using-pip)
-   - [Recommendations](#recommendations)
-   - [Requirements](#requirements)
-- [Quick Start Guide](#quick-start-guide) (for Windows)
-  - [Setup and create a virtual environment (recommended)](#setup-and-create-a-virtual-environment-recommended)
-  - [Install MASWavesPy](#install-maswavespy)
-  - [Test MASWavesPy](#test-maswavespy)
-  - [Deactivate the virtual environment](#deactivate-the-virtual-environment)
-- [Known Issues](#known-issues)
+2D MASWavesPy extends the functionality of the original **MASWavesPy** Python package developed by Magnús Snorri Bjarnason (Faculty of Civil and Environmental Engineering, University of Iceland).
 
-## About MASWavesPy
+The original package consists of the modules:
 
-The `maswavespy` package consists of four primary modules: `wavefield`, `dispersion`, `combination` and `inversion`, and two supplementary modules: `dataset` and `select_dc`. 
+- `wavefield`
+- `dispersion`
+- `combination`
+- `inversion`
+
+with helper modules:
+
+- `dataset`
+- `select_dc`
 
 The `wavefield` module provides methods to import recorded shot gathers as `RecordMC` objects. The phase shift method (1) is used to transform each shot gather into the frequency-phase velocity domain. The `dataset` module can be used to import a set of shot gathers in the form of a `Dataset` object through a .csv file. 
 
@@ -32,139 +26,409 @@ The `inversion` module provides methods to evaluate the shear wave velocity prof
 
 A more comprehensive description is provided in (5). 
 
-### Referencing MASWavesPy
-Referencing the MASWavesPy package and a paper related to its development is highly appreciated. 
+## 2D Implementation
 
-> Olafsdottir, E.A., Bessason, B., Erlingsson, S., Kaynia, A.M. (2024). A Tool for Processing and Inversion of MASW Data and a Study of Inter-Session Variability of MASW. Accepted for publication in _Geotechnical Testing Journal_ (in press).
+This 2D implementation adds support for the typical CMP (Common Midpoint) acquisition geometry used in standard 2D MASW surveys and provides:
 
-### License
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+- CMP sorting
+- Dispersion curve calculation
+- Interactive dispersion curve picking
+- Bayesian inversion
+- 2D shear-wave velocity section generation
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. 
+Processing parameters are controlled through a YAML configuration file.
 
-You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-### Acknowledgements
-This work was supported by the Icelandic Research Fund [grant numbers 206793-052 and 218149-051], the University of Iceland Research Fund, the Icelandic Road and Coastal Administration and the Energy Research Fund of the National Power Company of Iceland.
-
-> (1) Park, C.B., Miller, R.D., Xia, J. (1998). Imaging dispersion curves of surface waves on multi-channel record. In _SEG Technical Program Expanded Abstracts 1998_, New Orleans, Louisiana, pp. 1377–1380. [https://doi.org/10.1190/1.1820161](https://doi.org/10.1190/1.1820161)
-> 
-> (2) Olafsdottir, E.A., Bessason, B., Erlingsson, S. (2018a). Combination of dispersion curves from MASW measurements. _Soil Dynamics and Earthquake Engineering_, 113, pp. 473–487. [https://doi.org/10.1016/j.soildyn.2018.05.025](https://doi.org/10.1016/j.soildyn.2018.05.025)
-> 
-> (3) Buchen, P.W., Ben-Hador, R. (1996). Free-mode surface-wave computations. _Geophysical Journal International_, 124(3), pp. 869–887. [https://doi.org/10.1111/j.1365-246X.1996.tb05642.x](https://doi.org/10.1111/j.1365-246X.1996.tb05642.x)
-> 
-> (4) Olafsdottir, E.A., Erlingsson, S., Bessason, B. (2020). Open-Source MASW Inversion Tool Aimed at Shear Wave Velocity Profiling for Soil Site Explorations, _Geosciences_, 10(8), 322. [https://doi.org/10.3390/geosciences10080322](https://doi.org/10.3390/geosciences10080322)
-> 
-> (5) Olafsdottir, E.A., Bessason, B., Erlingsson, S., Kaynia, A.M. (2024). A Tool for Processing and Inversion of MASW Data and a Study of Inter-Session Variability of MASW. Accepted for publication in _Geotechnical Testing Journal_ (in press).
+---
 
 ## Installation
-A [Quick Start Guide](#quick-start-guide) describing the recommended workflow for Windows users is provided below.
+The requirements for the packages are:
 
-### General installation using pip
-The MASWavesPy package is installed using pip. 
+- obspy (1.5.0)
+- cython (3.2.9)
+- pandas (3.0.5)
+- pyyaml (6.0.3)
 
-`pip install maswavespy`
+It is best to create an environment for the code e.g.
 
-Wheels for Windows, Linux and Mac distributions can also be downloaded from [PyPI](https://pypi.org/project/maswavespy/#files).
-
-
-### Recommendations
-We recommend to install the MASWavesPy package into an isolated Python environment. If using Anaconda, create a virtual environment using [conda create](https://docs.conda.io/projects/conda/en/latest/commands/create.html). Alternatively, [virtualenv](https://docs.python.org/3/library/venv.html) can be used to install this package into an isolated Python environment. [Virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) is a tool to simplify the creation and management of local virtualenvs.
-
-The use of a Python IDE (Integrated Development Environment) is strongly recommended for using MASWavesPy (as opposed to running commands in the Windows terminal/cmd environment). 
-
-MASWavesPy is developed using the [Anaconda distribution](https://www.anaconda.com/). Hence Anaconda and the Spyder IDE (included with Anaconda) are recommended for running the Quick Start Guide. 
-
-### Requirements
-
-To build the package on Windows you need Microsoft C++ Build Tools. You can download an installer from Microsoft at this [link](https://visualstudio.microsoft.com/visual-cpp-build-tools/). Otherwise you will see an error:
-```
-error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/
-```
-For more information you can view this Stackoverflow [answer](error: Microsoft Visual C++ 14.0 or greater is required. Get it with "Microsoft C++ Build Tools": https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-
-This is required because the package uses [Cython](https://cython.org/) for some of its calculations.
-
-## Quick Start Guide
-**Applies for Windows Users.**
-
-### Setup and create a virtual environment, recommended
-
-1. (If required) Download and install [Anaconda](https://www.anaconda.com/download).
-2. (If required) Install [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/). The Microsoft C++ Build Tools are required for building the package on Windows.
-3. (Recommended) Create a virtual environment to install the package into an isolated Python environment. A brief guide is provided below.
-   - Start Anaconda Prompt from the Start menu.
-   - Verify that `conda` is installed in your path by typing `conda -V`
-   - Navigate to the `anaconda3` directory.
-   - Make sure that the newest version of `conda` is installed. Update conda by typing `conda update conda`.
-   - Navigate back to the previous folder.
-   - Get your python version (3.x.yy) by typing `python -V`.
-   - Set up a virtual environment (here named `testenv`) by typing `conda create --name testenv python=3.x` (where 3.x is replaced by the python version that you have/want to use).
-   - Activate the virtual environment by typing `conda activate testenv`. To see a list of available environments, type `conda info --envs`.
-   - Install [Spyder](https://www.spyder-ide.org/) into the virtual environment by typing `conda install spyder`.
-
-### Install MASWavesPy
-
-The package is installed using [pip](https://pip.pypa.io/en/stable/).
-1. (If required) Start Anaconda Prompt.
-2. Type `pip install maswavespy` to install the package.
-3. Check if the package has been successfully installed by inspecting the last lines that are displayed in the Anaconda Prompt console.
-
-### Test MASWavesPy
-
-1. Download the contents of the [examples](https://github.com/Mazvel/maswavespy/tree/main/examples) directory (i.e., the four example `.py` files and the directory `Data`) to a folder destination of your choice.
-   - The four example files (with `.py` endings) test different parts/commands of the MASWavesPy package.
-   - The example files use the data from the [examples/Data](https://github.com/Mazvel/maswavespy/tree/main/examples/Data) directory as inputs. 
-2. Launch the _Spyder (testenv)_ app [i.e., Spyder (name of your virtual environment)] from the Start menu.
-   - _Spyder (testenv)_ is found in the folder Anaconda3 in the Start menu (for the latest versions of Anaconda).
-3. Set the directory that contains the example `.py` files and the `Data` directory as the working directory in _Spyder (testenv)_.
-   - The working directory is set in the top right corner of the Spyder IDE window.
-4. Open and run `MASWavesPy_Dispersion_test1.py` to test the basic methods of the `wavefield` and `dispersion` modules using a single data file.
-   - Please note that all four example files are written to be run one cell at a time using the keyboard shortcut (Ctrl+Enter), Run > Run cell, or the Run cell button in the toolbar.
-   - Information on specific methods/commands is provided in each example file.
-5. Open and run `MASWavesPy_Dispersion_test2.py` to test the methods of the `wavefield` and `dispersion` modules using a `Dataset` object.
-6. Open and run `MASWavesPy_Combination_test.py` to test the `combination` module.
-7. Open and run `MASWavesPy_Inversion_test.py` to test the `inversion` module.
-
-### Deactivate the virtual environment
-Applies if a virtual environment has been created.
-1. (If required) Close the Spyder IDE.
-2. (If required) Start Anaconda Prompt.
-3. Close the virtual environment `testenv` by typing `conda deactivate`.
-4. If required, the virtual environment `testenv` can be deleted with the following command `conda remove --name testenv --all`.
-
-## Known Issues
-
-### Matplotlib should use TkAgg on Mac
-
-MaswavesPy depends on matplotlib. If you are on mac you need to ensure matplotlib uses `TkAgg`. Below is a workaround that is used in our examples.
-
-```
-if sys_pf == 'darwin':
-    import matplotlib
-    matplotlib.use("TkAgg")
+```bash
+mamba create -n 2Dmaswavespy python=3.11
 ```
 
-### Tkinter not found on Mac 
-
-On mac you might run into `ModuleNotFoundError: No module named '_tkinter'` error, even after successfully installing `maswavespy` that has [Tkinter](https://docs.python.org/3/library/tkinter.html) as one of its listed dependencies. This might be because your python3 installation did not have Tkinter correctly set up. Below is an example of how it can be installed with brew.
-
-`brew install python-tk`
-
-### blosc2~=2.0.0 not installed
-
-When installing `maswavespy` into the Anaconda environment, you might encounter the following error, even though `maswavespy` is successfully installed.
-
-```
-ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-tables 3.8.0 requires blosc2~=2.0.0, which is not installed.
+Activate the environment
+```bash
+mamba activate 2Dmaswavespy
 ```
 
-The `maswavespy` package does not require [`blosc2 2.0.0`](https://pypi.org/project/blosc2/2.0.0/). Therefore, this error message can be ignored. 
+The easiest installation is using the provided environment.yml file.
 
-The error can be prevented by installing [`Cython`](http://www.cython.org/) (required for installing `blosc2 2.0.0`) and `blosc2 2.0.0` prior to installing  `maswavespy`. Below is an example of how these two packages can be installed
+```bash
+mamba env create -f environment.yml
+```
 
+or if you don't use mamba
+
+```bash
+conda env create -f environment.yml
 ```
-conda install -c conda-forge cython
-pip install blosc2==2.0.0
+
+## Manual Installation
+
+If you want to install packages manually you can use
+
+```bash
+pip install obspy
 ```
+
+```bash
+pip install cython
+```
+
+```bash
+pip install pandas
+```
+
+```bash
+pip install pyyaml
+```
+
+and compile the cython components of maswavespy
+
+```bash
+pip install -e .
+```
+
+which uses setup.py. Note that in the process seom packages might be
+reinstalled.
+
+You might also want to install ipython (if using notebooks)
+
+```bash
+pip install ipython
+```
+
+You might need to add the path to the maswavespy repository to your
+Python path
+
+```bash
+export PYTHONPATH=("$PYTHONPATH:/path/to/your/2Dmaseavespy")
+```
+
+or similar for your shell. 
+
+
+---
+# Running the code
+
+## Required Input Files
+
+### 1. Configuration File
+
+Example:
+
+```text
+MASWavesPy_config.yaml
+```
+
+The configuration file should define:
+
+- Site name
+- Profile name
+- SEG2 inventory file
+- Initial velocity model
+- Processing options
+
+---
+
+### 2. SEG2 Inventory
+
+A text file containing paths to the original shot gather files, one file per line.
+
+Example:
+
+```text
+Example_Data/3006.dat
+Example_Data/3007.dat
+Example_Data/3008.dat
+```
+
+Example filename:
+
+```text
+Line_3000.csv
+```
+
+---
+
+### 3. Initial Velocity Model
+
+Example:
+
+```text
+ElCuchillo_initial.csv
+```
+
+Required format:
+
+| Layer | Thickness h (m) | Vs (m/s) | Density (kg/m³) | Saturation | Vp (m/s) | ν |
+|---------|---------|---------|---------|---------|---------|---------|
+| 1 | 1 | 150 | 1850 | sat | 400 | 0.3 |
+| 2 | 2 | 175 | 1900 | sat | 550 | 0.3 |
+| 3 | 8 | 200 | 1950 | sat | 900 | 0.3 |
+| 4 (half-space) | - | 750 | 1950 | sat | 1500 | 0.3 |
+
+---
+
+## Workflow Control
+
+Processing stages can be enabled or disabled individually.
+
+Example:
+
+```yaml
+cmp_sorting:
+  enabled: true
+
+processing:
+  enabled: true
+
+plotting:
+  create_section: true
+```
+
+---
+
+## Running the Code
+
+```bash
+python MASWavesPy_processing.py MASWavespy_config.yaml
+```
+
+---
+
+# CMP Sorting
+
+CMP spacing is defined as a multiple of the geophone spacing.
+
+Example:
+
+```yaml
+cmp_bin_factor: 2
+```
+
+This creates CMP bins that are twice the geophone spacing.
+
+Output directory:
+
+```yaml
+output_dir: CMP_Gathers
+```
+
+For standard CMP processing:
+
+```yaml
+forward_only: true
+```
+
+This uses only forward shots and maintains consistency with SeisImager2D.
+
+### Notes
+
+- Geometry files are generated automatically for each CMP.
+- These geometry files are later used when reading the dataset in CMP mode.
+- If CMP sorting is skipped, a valid `CMP_inventory.csv` must already exist.
+
+---
+
+# Dispersion Curve Picking
+
+Each CMP must be processed individually.
+
+## Step 1: Review the Wavefield
+
+The CMP dataset is displayed as a record section with increasing source-receiver distance.
+
+Information such as:
+
+- Source location
+- Receiver location
+- Offset range
+
+is printed to the command line.
+
+After reviewing data quality, close the wavefield window.
+
+---
+
+## Step 2: Compute the Dispersion Image
+
+The software calculates the CMP dispersion image and opens the interactive picking GUI.
+
+### Picking Options
+
+You can define phase velocities using:
+
+#### Method A
+
+Select a frequency range interactively using a mouse-drawn box.
+
+#### Method B
+
+Pick individual phase velocity measurements manually.
+
+#### Method C
+
+Provide frequency indices manually using a comma-separated list:
+
+```text
+10-15,16,18,...
+```
+
+Selected points become labelled and highlighted.
+
+When finished:
+
+1. Click **Stop**
+2. Click **Save Dispersion Curve**
+3. Click **Close**
+
+---
+
+## Step 3: Initial Model Comparison
+
+The picked dispersion curve is plotted together with the theoretical dispersion curve generated from the initial velocity model.
+
+The initial misfit is printed to the command line.
+
+A poor initial fit is acceptable provided inversion search bounds are sufficiently wide.
+
+---
+
+# Bayesian Inversion
+
+Closing the comparison window starts the inversion.
+
+Progress is displayed in the terminal.
+
+Several diagnostic windows are shown during processing.
+
+## Sampled Models
+
+Displays:
+
+- All sampled models
+- Associated misfits
+- Corresponding Vs structures
+
+Higher-quality models are shown using brighter colours.
+
+Review the parameter space coverage and close the window.
+
+---
+
+## Accepted Vs Profiles
+
+Displays:
+
+- All accepted velocity profiles
+- Rejected models in grey
+- Potential multimodal behaviour in the posterior distribution
+
+Review and close the window.
+
+---
+
+## Median Velocity Model
+
+Displays:
+
+- Median Vs profile
+- Velocity uncertainty
+- Layer-depth uncertainty
+- Theoretical dispersion curve of the median model
+
+Review uncertainty estimates and close the figure.
+
+---
+
+## Best-Fitting Models
+
+Displays:
+
+- Ten lowest-misfit Vs profiles
+- Their corresponding dispersion curves
+
+Additional statistical summaries are printed to the terminal, including:
+
+- Median velocities at selected depths
+- Lowest-misfit model properties
+
+After closing, processing automatically continues to the next CMP.
+
+---
+
+# Final 2D Section
+
+After all CMPs have been processed, the final 2D velocity model is created.
+
+The output contains:
+
+## Velocity Models
+
+- Blocky inversion model
+- Gaussian-smoothed velocity model
+
+## Uncertainty Panels
+
+- Velocity uncertainty
+- Interface-depth uncertainty
+
+---
+
+## Saved Output
+
+All inversion products are saved to the `Results` directory:
+
+- Picked dispersion curves
+- Inverted models
+- Pickle files
+
+The final 2D section is additionally exported as:
+
+```text
+Results/*.pdf
+```
+
+Intermediate figures are***not automatically saved** and sh*uld be saved manually if required.*
+---
+
+# Acknowledgements
+
+This pro*ect builds upon **MASWavesPy**:
+
+h*tps://github.com/Mazvel/maswavespy*
+## References
+
+1. *Park, C.B., Miller, R.D., Xia, J.* (1998).  
+   *Imging dispersion curves of surface *aves on multi*channel record.*  
+   SEG Technica* Program Expanded Abstracts.  
+   *ttps://doi.org/10.1190/1.1820161
+
+2. Olafsdottir, E.A., Bessason, B.,*Erlingsson, S. (2018).  
+   *Combination of dispersion curves from MA*W measurements*.  
+   Soil Dynamics and Earthquake Engineering, 113, *73-487.  
+   https://doi.org/10.10*6/j.soildyn.2018.05.025
+
+3. Buchen P.W., Ben-Hador, R. (1996).  
+   *Free-mode surface-wave computation*.*  
+   Geophysical Journal Intern*tional, 124(3), 869-887.  
+   http*://doi.org/10.1111/j.1365-246X.199*.tb05642.x
+
+4. Olafsdottir, E.A., Erlingsson, S., Bessason, B. (2020)*  
+   *Open-Source MASW Inversion *ool Aimed at Shear Wave Velocity Profiling for Soil Site Explorations**  
+   Geosciences, 10(8), 322.  
+*  https://doi.org/10.3390/geoscien*es10080322
+
+5. Olafsdottir, E.A., *essason, B., Erlingsson, S., Kayni*, A.M. (2024).  
+   *A Tool for Pr*cessing and Inversion of MASW Data and a Study of Inter-Session Variability of MASW.*  
+   Geotechnical Testing Journal, 47(5), 1006-1025. *
+   https://doi.org/10.1520/GTJ202*0380

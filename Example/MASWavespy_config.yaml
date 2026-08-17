@@ -1,0 +1,64 @@
+project:
+  site: ElChuchillo
+  profile: Line3000
+
+input:
+  seg2_inventory: Line_3000.csv
+  initial_model: ElCuchillo_initial.csv
+
+cmp_sorting:
+  enabled: true
+  forward_only: true
+  cmp_bin_factor: 2
+  output_dir: CMP_Gathers
+
+processing:
+  enabled: true
+  sampling_rate: 8000
+  f_pick_min: 4.5
+
+# Likely not much editing required after this point
+
+  dispersion:
+    cT_min: 80
+    cT_max: 1000
+    cT_step: 0.5
+    f_min: 0
+    f_max: 70
+
+  inversion:
+
+    c_test:
+      min: 100
+      max: 1000
+      step: 0.1
+      delta_c: 3
+
+    settings:
+      run: 20
+      bs: 5
+      bh: 10
+      N_max: 1000
+
+  max_depth: 33
+
+output:
+  model_dir: Results
+
+plotting:
+
+  create_section: true
+
+  dz: 0.25
+  max_depth: 33
+
+  sigma_vertical: 2.0
+  sigma_horizontal: 1.5
+
+  cmap_vs: viridis
+  cmap_std: magma
+
+workflow:
+
+  skip_processed: true
+  status_file: status.yaml

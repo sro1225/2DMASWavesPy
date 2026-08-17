@@ -1,0 +1,13 @@
+record_id,site,profile,file_name,header_lines,n,direction,dx,x1,geometry_file
+r1,CMP,CMP,CMP_0.00.dat,5,4,cmp,2.0,0.0,CMP_0.00_geometry.csv
+r2,CMP,CMP,CMP_4.00.dat,5,12,cmp,2.0,4.0,CMP_4.00_geometry.csv
+r3,CMP,CMP,CMP_8.00.dat,5,20,cmp,2.0,8.0,CMP_8.00_geometry.csv
+r4,CMP,CMP,CMP_12.00.dat,5,28,cmp,2.0,12.0,CMP_12.00_geometry.csv
+r5,CMP,CMP,CMP_16.00.dat,5,36,cmp,2.0,16.0,CMP_16.00_geometry.csv
+r6,CMP,CMP,CMP_20.00.dat,5,44,cmp,2.0,20.0,CMP_20.00_geometry.csv
+r7,CMP,CMP,CMP_24.00.dat,5,46,cmp,2.0,24.0,CMP_24.00_geometry.csv
+r8,CMP,CMP,CMP_28.00.dat,5,38,cmp,2.0,28.0,CMP_28.00_geometry.csv
+r9,CMP,CMP,CMP_32.00.dat,5,30,cmp,2.0,32.0,CMP_32.00_geometry.csv
+r10,CMP,CMP,CMP_36.00.dat,5,22,cmp,2.0,36.0,CMP_36.00_geometry.csv
+r11,CMP,CMP,CMP_40.00.dat,5,14,cmp,2.0,40.0,CMP_40.00_geometry.csv
+r12,CMP,CMP,CMP_44.00.dat,5,6,cmp,2.0,44.0,CMP_44.00_geometry.csv

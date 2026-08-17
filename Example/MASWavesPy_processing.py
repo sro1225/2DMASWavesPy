@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+
+import yaml
+import os
+
+from maswavespy.cmp.sorting import create_cmp_gathers
+from maswavespy.cmp.processing import process_cmp
+from maswavespy.cmp.plotting import plot_cmp_section
+
+
+def load_status(filename):
+
+    if not os.path.exists(filename):
+        return {
+            "completed": [],
+            "failed": [],
+            "current": None
+        }
+
+    with open(filename, "r") as f:
+        return yaml.safe_load(f)
+
+
+def save_status(status, filename):
+
+    with open(filename, "w") as f:
+        yaml.dump(status, f, sort_keys=False)
+
+def main(configfile):
+
+    with open(configfile, "r") as f:
+        config = yaml.safe_load(f)
+
+    status_file = config["workflow"]["status_file"]
+
+    status = load_status(status_file)
+
+    # Step 1 - CMP Sorting
+    if config["cmp_sorting"]["enabled"]:
+
+        print("\nCreating CMP gathers\n")
+
+        cmp_locations = create_cmp_gathers(
+            input_csv=config["input"]["seg2_inventory"],
+            output_dir=config["cmp_sorting"]["output_dir"],
+            cmp_bin_factor=config["cmp_sorting"]["cmp_bin_factor"],
+            forward_only=config["cmp_sorting"]["forward_only"]
+        )
+
+    else:
+
+        print("Sorting disabled. Moving to next step")
+        cmp_locations=[]
+    
+    # Step 2 Going through all CMPs and pick dispersion curves and run Bayesian inversion
+    print("processing enabled =", config["processing"]["enabled"])
+    print("number of CMPs =", len(cmp_locations))
+    print("CMP locations =", cmp_locations[:10])
+    if config["processing"]["enabled"]:
+        
+        for cmp_loc in cmp_locations:
+            
+            if (
+                    config["workflow"]["skip_processed"]
+                    and cmp_loc in status["completed"]
+            ):
+                print(f"Skipping CMP {cmp_loc}")
+                continue
+            
+            status["current"] = float(cmp_loc)
+            save_status(status, status_file)
+            
+            try:
+                print(f"Now processing CMP {cmp_loc}")
+                process_cmp(
+                    cmp_loc,
+                    config
+                )
+                
+                status["completed"].append(
+                    float(cmp_loc)
+                )
+                
+                if cmp_loc in status["failed"]:
+                    status["failed"].remove(cmp_loc)
+
+            except Exception as e:
+                
+                print(
+                    f"Failed CMP {cmp_loc}: {e}"
+                )
+                
+                if float(cmp_loc) not in status["failed"]:
+                    status["failed"].append(
+                        float(cmp_loc)
+                    )
+                    
+                    save_status(status, status_file)
+                    
+                    status["current"] = None
+                    save_status(status, status_file)
+    else:
+        print("CMP dispersion picking and inversion skipped. Moving to plotting")
+
+    # Step 3 - plotting 2D section
+    if config["plotting"]["create_section"]:
+
+        plot_cmp_section(config)
+
+
+
+        
+if __name__ == "__main__":
+
+    import sys
+
+    if len(sys.argv) != 2:
+        raise SystemExit(
+            "Usage: python maswavepy_cmp_workflow.py config.yaml"
+        )
+
+    main(sys.argv[1])
+
+    

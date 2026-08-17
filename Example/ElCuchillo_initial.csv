@@ -1,0 +1,5 @@
+layer no,h [m],Vs [m/s],rho [kg/m3],saturated/unsaturated,Vp [m/s],nu [-]
+1,1,150,1850,sat,400,0.3
+2,2,175,1900,sat,550,0.3
+3,8,200,1950,sat,900,0.3
+4 (half-space),,750,1950,sat,1500,0.3

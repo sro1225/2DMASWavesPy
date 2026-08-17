@@ -48,18 +48,7 @@ The requirements for the packages are:
 - pandas (3.0.5)
 - pyyaml (6.0.3)
 
-It is best to create an environment for the code e.g.
-
-```bash
-mamba create -n 2Dmaswavespy python=3.11
-```
-
-Activate the environment
-```bash
-mamba activate 2Dmaswavespy
-```
-
-The easiest installation is using the provided environment.yml file.
+The easiest installation of maswavespy and the requirements  is using the provided environment.yml file.
 
 ```bash
 mamba env create -f environment.yml
@@ -71,9 +60,24 @@ or if you don't use mamba
 conda env create -f environment.yml
 ```
 
+This creates the environment and compiles the cython modules required
+for the MC inversion and calculation of the theoretical and data
+derived dispersion curves.
+
 ## Manual Installation
 
-If you want to install packages manually you can use
+If you prefer a manual installation of maswavespy it is best to create an environment for the code e.g.
+
+```bash
+mamba create -n 2Dmaswavespy python=3.11
+```
+
+Activate the environment
+```bash
+mamba activate 2Dmaswavespy
+```
+
+A number of packages need to be installed
 
 ```bash
 pip install obspy

@@ -48,7 +48,11 @@ The requirements for the packages are:
 - pandas (3.0.5)
 - pyyaml (6.0.3)
 
-The easiest installation of maswavespy and the requirements  is using the provided environment.yml file.
+The easiest installation of maswavespy and the requirements  is using
+the provided environment.yml file.
+
+**Note:** Note as the inversion is realized in cython you will need a
+functioning C++ compiler which needs separate installation. 
 
 ```bash
 mamba env create -f environment.yml

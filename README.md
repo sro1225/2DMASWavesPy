@@ -51,8 +51,8 @@ The requirements for the packages are:
 The easiest installation of maswavespy and the requirements  is using
 the provided environment.yml file.
 
-**Note:** Note as the inversion is realized in cython you will need a
-functioning C++ compiler which needs separate installation. 
+**__Note:__** __As the inversion is realized in cython you will need a
+functioning C++ compiler which needs separate installation.__ 
 
 ```bash
 mamba env create -f environment.yml
